@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hazardous Attitudes Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #CDEBFA;
+  --sky-deep: #8FD0F2;
+  --surface: #FFFFFF;
+  --ink: #1B2A41;
+  --ink-soft: #4F6178;
+  --line: #D7E6EF;
+  --cloud: #FFFFFF;
+  --primary: #1A73C9;
+  --on-primary: #FFFFFF;
+  --good: #1E8A4C;
+  --good-bg: #DDF5E6;
+  --bad: #C9302C;
+  --bad-bg: #FCE3E1;
+  --c-anti: #E4572E;
+  --c-impul: #E0921F;
+  --c-invul: #2A9D8F;
+  --c-macho: #7B5EA7;
+  --c-resig: #4F74B0;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sky: #0F1E33; --sky-deep: #1A3354; --surface: #182A42; --ink: #E8F1F8; --ink-soft: #A7B8CA;
+    --line: #2A4262; --cloud: #24395A; --primary: #6FB4F2; --on-primary: #0F1E33;
+    --good: #5FD08F; --good-bg: #173A2A; --bad: #FF7B72; --bad-bg: #42201F;
+    --c-anti: #FF8A65; --c-impul: #F7B955; --c-invul: #4FD1C1; --c-macho: #B79AE6; --c-resig: #8FB0EA;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --sky: #0F1E33; --sky-deep: #1A3354; --surface: #182A42; --ink: #E8F1F8; --ink-soft: #A7B8CA;
+  --line: #2A4262; --cloud: #24395A; --primary: #6FB4F2; --on-primary: #0F1E33;
+  --good: #5FD08F; --good-bg: #173A2A; --bad: #FF7B72; --bad-bg: #42201F;
+  --c-anti: #FF8A65; --c-impul: #F7B955; --c-invul: #4FD1C1; --c-macho: #B79AE6; --c-resig: #8FB0EA;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--sky);
+  color: var(--ink);
+  font-family: "Nunito", "Trebuchet MS", Arial, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main { width: 100%; max-width: 46rem; margin: 0 auto; padding: 1.25rem 1.1rem 2rem; flex: 1; }
+h1, h2, h3, .fun {
+  font-family: "Fredoka", "Trebuchet MS", Arial, sans-serif;
+  font-weight: 600; line-height: 1.15; margin: 0;
+}
+h1 { font-size: clamp(2.3rem, 8vw, 3.4rem); }
+h2 { font-size: 1.7rem; margin-bottom: 0.6rem; }
+h3 { font-size: 1.35rem; }
+p { margin: 0 0 0.75rem; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+.hidden { display: none !important; }
+
+/* ---------- Hero ---------- */
+.hero { text-align: center; padding: 0.5rem 0 1.25rem; }
+.hero svg { width: 100%; max-width: 30rem; height: auto; display: block; margin: 0 auto 0.5rem; }
+.hero p { font-size: 1.15rem; color: var(--ink-soft); max-width: 32rem; margin: 0.6rem auto 0; }
+.plane { animation: glide 1.6s ease-out both; }
+@keyframes glide { from { transform: translate(-140px, 40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---------- Buttons ---------- */
+.big {
+  display: flex; align-items: center; gap: 0.9rem; width: 100%; text-align: left;
+  background: var(--surface); color: var(--ink);
+  border: 3px solid var(--line); border-radius: 18px;
+  padding: 0.9rem 1.1rem; min-height: 4.75rem;
+  box-shadow: 0 4px 0 var(--line);
+  transition: transform 0.1s ease;
+}
+.big:hover { border-color: var(--primary); }
+.big:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--line); }
+.big .emoji { font-size: 2.1rem; line-height: 1; }
+.big strong { display: block; font-family: "Fredoka", Arial, sans-serif; font-weight: 600; font-size: 1.35rem; }
+.big span.desc { color: var(--ink-soft); font-size: 1rem; }
+.big.learn { background: var(--primary); color: var(--on-primary); border-color: var(--primary); box-shadow: 0 4px 0 color-mix(in srgb, var(--primary) 60%, #000); }
+.big.learn span.desc { color: var(--on-primary); opacity: 0.9; }
+.menu { display: grid; gap: 0.85rem; }
+.menu-label { font-family: "Fredoka", Arial, sans-serif; font-weight: 600; font-size: 1.2rem; margin: 1rem 0 -0.2rem; }
+
+.pill {
+  background: var(--primary); color: var(--on-primary); border: none; border-radius: 999px;
+  padding: 0.8rem 1.6rem; min-height: 3.1rem; font-weight: 800; font-size: 1.1rem;
+}
+.ghost {
+  background: var(--surface); color: var(--ink); border: 2px solid var(--line); border-radius: 999px;
+  padding: 0.55rem 1.1rem; min-height: 2.9rem; font-weight: 700;
+}
+.ghost:hover { border-color: var(--ink-soft); }
+
+/* ---------- Panels ---------- */
+.panel {
+  background: var(--surface); border-radius: 20px; padding: 1.25rem 1.25rem 1rem;
+  margin-bottom: 1rem; border: 2px solid var(--line);
+}
+.topbar { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.topbar h2 { flex: 1; margin: 0; }
+
+/* ---------- Learn page ---------- */
+.steps { margin: 0; padding-left: 1.4rem; }
+.steps li { margin-bottom: 0.4rem; }
+.att-card {
+  background: var(--surface); border-radius: 20px; border: 2px solid var(--line);
+  border-top: 10px solid var(--c); padding: 1rem 1.15rem 0.9rem; margin-bottom: 0.9rem;
+}
+.att-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+.badge {
+  width: 3.2rem; height: 3.2rem; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-size: 1.7rem;
+  background: color-mix(in srgb, var(--c) 22%, var(--surface));
+}
+.att-head .says { color: var(--c); font-weight: 800; font-size: 1.05rem; }
+.att-card dl { margin: 0; }
+.att-card dt { font-weight: 800; margin-top: 0.5rem; }
+.att-card dd { margin: 0; }
+.antidote-chip {
+  display: inline-block; margin-top: 0.25rem; padding: 0.35rem 0.8rem; border-radius: 12px;
+  background: var(--good-bg); color: var(--ink); font-weight: 700;
+}
+.clue-list { list-style: none; margin: 0; padding: 0; }
+.clue-list li { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.45rem 0; border-bottom: 1px dashed var(--line); }
+.clue-list li:last-child { border-bottom: none; }
+.clue-list .e { font-size: 1.3rem; line-height: 1.3; }
+.clue-list b { color: var(--c); }
+.tricky p { margin-bottom: 0.6rem; }
+
+/* ---------- Quiz ---------- */
+.progress-meta { display: flex; justify-content: space-between; font-weight: 700; color: var(--ink-soft); margin-bottom: 0.35rem; }
+.progress { height: 16px; background: var(--surface); border: 2px solid var(--line); border-radius: 999px; overflow: hidden; margin-bottom: 1.2rem; position: relative; }
+.progress div { height: 100%; background: var(--primary); width: 0; border-radius: 999px; transition: width 0.3s ease; }
+.scenario { position: relative; }
+.scenario .who { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--ink-soft); margin-bottom: 0.4rem; }
+.scenario .who span { font-size: 1.6rem; }
+.scenario .text { font-size: 1.2rem; margin: 0; }
+.prompt { font-family: "Fredoka", Arial, sans-serif; font-weight: 600; font-size: 1.3rem; margin: 0.25rem 0 0.75rem; }
+.choices { display: grid; gap: 0.65rem; }
+.choice {
+  display: flex; align-items: center; gap: 0.8rem; text-align: left; width: 100%;
+  background: var(--surface); color: var(--ink);
+  border: 3px solid var(--c); border-radius: 16px;
+  padding: 0.6rem 0.9rem; min-height: 3.75rem;
+  font-weight: 800; font-size: 1.15rem;
+  box-shadow: 0 4px 0 var(--c);
+  transition: transform 0.1s ease;
+}
+.choice .badge { width: 2.5rem; height: 2.5rem; font-size: 1.35rem; }
+.choice.antidote-text { font-weight: 700; font-size: 1.05rem; }
+.choice:hover:not(:disabled) { transform: translateY(-2px); }
+.choice:disabled { cursor: default; }
+.choice .mark { margin-left: auto; font-size: 1.4rem; }
+.choice.is-correct { background: var(--good-bg); border-color: var(--good); box-shadow: 0 4px 0 var(--good); }
+.choice.is-wrong { background: var(--bad-bg); border-color: var(--bad); box-shadow: 0 4px 0 var(--bad); }
+.choice.is-dim { opacity: 0.4; }
+.clue-toggle { margin: 0.9rem 0 0; }
+.clue-box { margin-top: 0.75rem; }
+
+.feedback { margin-top: 1.1rem; border-radius: 20px; padding: 1rem 1.2rem; border: 3px solid var(--good); background: var(--good-bg); }
+.feedback.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.feedback .verdict { font-family: "Fredoka", Arial, sans-serif; font-weight: 600; font-size: 1.5rem; margin-bottom: 0.4rem; }
+.feedback .antidote { font-weight: 700; }
+
+/* ---------- Results ---------- */
+.score-wrap { text-align: center; }
+.score-wrap .emoji { font-size: 3.5rem; line-height: 1; }
+.score { font-family: "Fredoka", Arial, sans-serif; font-weight: 700; font-size: clamp(3rem, 13vw, 4.5rem); line-height: 1.1; margin: 0.25rem 0; }
+.score-msg { font-size: 1.25rem; font-weight: 700; }
+.row { display: grid; grid-template-columns: 2.6rem 1fr auto; gap: 0.6rem; align-items: center; padding: 0.45rem 0; }
+.row .badge { width: 2.4rem; height: 2.4rem; font-size: 1.25rem; }
+.row .name { font-weight: 800; }
+.track { height: 12px; background: var(--line); border-radius: 999px; overflow: hidden; margin-top: 0.25rem; }
+.track div { height: 100%; background: var(--c); border-radius: 999px; }
+.row .num { font-weight: 800; white-space: nowrap; }
+.miss { border-left: 8px solid var(--bad); }
+.miss .label { color: var(--ink-soft); font-weight: 700; }
+.actions { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem; }
+
+footer { text-align: center; color: var(--ink-soft); font-size: 0.9rem; padding: 1.25rem 1rem 1.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .plane { animation: none; }
+  .progress div { transition: none; }
+  .big, .choice { transition: none; }
+  .choice:hover:not(:disabled) { transform: none; }
+}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section id="home">
+    <div class="hero">
+      <svg viewBox="0 0 480 170" role="img" aria-label="A small airplane flying past clouds">
+        <g fill="var(--cloud)">
+          <ellipse cx="80" cy="120" rx="58" ry="22"/><ellipse cx="110" cy="104" rx="36" ry="24"/><ellipse cx="62" cy="108" rx="26" ry="18"/>
+          <ellipse cx="390" cy="58" rx="54" ry="20"/><ellipse cx="415" cy="44" rx="32" ry="22"/><ellipse cx="368" cy="48" rx="22" ry="16"/>
+          <ellipse cx="300" cy="140" rx="40" ry="14"/><ellipse cx="318" cy="130" rx="24" ry="15"/>
+        </g>
+        <path d="M30 150 C 140 150, 170 70, 250 78" fill="none" stroke="var(--primary)" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.7"/>
+        <g class="plane">
+          <g transform="translate(250 50) rotate(-8)">
+            <rect x="0" y="22" width="120" height="22" rx="11" fill="var(--c-anti)"/>
+            <path d="M120 33 L138 29 L138 37 Z" fill="var(--ink)"/>
+            <rect x="136" y="14" width="5" height="38" rx="2.5" fill="var(--ink)"/>
+            <path d="M44 28 L84 28 L70 -6 L58 -6 Z" fill="var(--c-resig)"/>
+            <path d="M44 40 L84 40 L70 70 L58 70 Z" fill="var(--c-resig)" opacity="0.75"/>
+            <path d="M0 26 L-2 4 L18 4 L26 26 Z" fill="var(--c-invul)"/>
+            <rect x="88" y="25" width="20" height="9" rx="4" fill="var(--sky-deep)"/>
+            <rect x="64" y="25" width="18" height="9" rx="4" fill="var(--sky-deep)"/>
+          </g>
+        </g>
+      </svg>
+      <h1>Hazardous Attitudes</h1>
+      <p>Some ways of thinking can get pilots into trouble. Learn the five risky attitudes, then see if you can spot them!</p>
+    </div>
+
+    <div class="menu">
+      <button class="big learn" id="learnBtn">
+        <span class="emoji" aria-hidden="true">📘</span>
+        <span><strong>Start here: learn the 5 attitudes</strong><span class="desc">What they are, what they sound like, and how to fix them.</span></span>
+      </button>
+
+      <p class="menu-label">Ready to play?</p>
+      <button class="big" data-mode="practice">
+        <span class="emoji" aria-hidden="true">🛫</span>
+        <span><strong>Practice</strong><span class="desc">Name the attitude. You’ll find out right away if you’re right, and why.</span></span>
+      </button>
+      <button class="big" data-mode="antidote">
+        <span class="emoji" aria-hidden="true">💊</span>
+        <span><strong>Antidotes</strong><span class="desc">Pick the thought that would help the pilot make a safer choice.</span></span>
+      </button>
+      <button class="big" data-mode="test">
+        <span class="emoji" aria-hidden="true">🏆</span>
+        <span><strong>Test</strong><span class="desc">15 questions, no hints. See your score at the end.</span></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= LEARN ================= -->
+  <section id="learn" class="hidden">
+    <div class="topbar">
+      <h2>Learn the 5 attitudes</h2>
+      <button class="ghost" data-go="home">Back to menu</button>
+    </div>
+
+    <div class="panel">
+      <h3>What is a hazardous attitude?</h3>
+      <p>An <b>attitude</b> is the way you think about something. Most crashes aren’t caused by a broken airplane. They happen because a pilot made a bad choice, and bad choices usually start with a risky way of thinking.</p>
+      <p>The FAA (the government group in charge of flying in the U.S.) lists <b>five hazardous attitudes</b>. Each one has an <b>antidote</b>. Just like medicine for poison, an antidote is a thought a pilot can say to themselves to fix the risky thinking.</p>
+    </div>
+
+    <div class="panel">
+      <h3>How to play</h3>
+      <ol class="steps">
+        <li>Read what the pilot is thinking, saying, or doing.</li>
+        <li>Look for clues. Is the pilot breaking a rule? Rushing? Showing off?</li>
+        <li>Tap the attitude (or antidote) that fits best.</li>
+        <li>Read the explanation so you know why. That’s how you get better!</li>
+      </ol>
+    </div>
+
+    <div id="attCards"></div>
+
+    <div class="panel">
+      <h3>Clue card: ask yourself…</h3>
+      <ul class="clue-list" id="clueListLearn"></ul>
+    </div>
+
+    <div class="panel tricky">
+      <h3>Watch out for look-alikes 👀</h3>
+      <p><b>Macho vs. Invulnerability:</b> A macho pilot knows there’s danger but thinks “I’m good enough to handle it.” An invulnerable pilot thinks “There’s no danger for me at all.”</p>
+      <p><b>Anti-authority vs. Impulsivity:</b> An anti-authority pilot breaks a rule <i>on purpose</i> because they don’t like being told what to do. An impulsive pilot moves <i>too fast</i> to think about the rule.</p>
+      <p><b>Resignation vs. Anti-authority:</b> A resigned pilot just goes along with whatever happens or whatever others say. An anti-authority pilot pushes back against others.</p>
+    </div>
+
+    <div class="actions">
+      <button class="pill" data-mode="practice">Start practicing 🛫</button>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz" class="hidden">
+    <div class="topbar">
+      <h2 id="modeName">Practice</h2>
+      <button class="ghost" id="restartBtn">Restart</button>
+      <button class="ghost" data-go="home">Menu</button>
+    </div>
+    <div class="progress-meta"><span id="progressText">Question 1 of 20</span><span id="scoreText"></span></div>
+    <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+
+    <div class="panel scenario">
+      <div class="who"><span aria-hidden="true">🧑‍✈️</span> The pilot…</div>
+      <p class="text" id="scenarioText"></p>
+    </div>
+    <p class="prompt" id="promptText">Which hazardous attitude is this?</p>
+    <div class="choices" id="choices"></div>
+
+    <button class="ghost clue-toggle" id="clueToggle" aria-expanded="false">🔍 Show clue card</button>
+    <div class="panel clue-box hidden" id="clueBox">
+      <ul class="clue-list" id="clueListQuiz"></ul>
+    </div>
+
+    <div class="feedback hidden" id="feedback" role="status" aria-live="polite"></div>
+  </section>
+
+  <!-- ================= RESULTS ================= -->
+  <section id="results" class="hidden">
+    <div class="topbar"><h2 id="resultsTitle">Results</h2></div>
+    <div id="resultsBody"></div>
+  </section>
+</main>
+<footer>Learning activity created by B.Estes assisted with AI, used with permission.</footer>
+
+<script>
+/* ============================================================
+   ATTITUDES — names, emoji, colors, kid-friendly explanations,
+   and the FAA antidotes
+   ============================================================ */
+const ATTITUDES = {
+  anti:  { name: "Anti-authority",  emoji: "🙅", color: "var(--c-anti)",
+           thought: "Don’t tell me.", antidote: "Follow the rules. They are usually right.",
+           means: "The pilot doesn’t like being told what to do. They ignore rules, checklists, or instructions from people like air traffic control or a mechanic.",
+           everyday: "Walking across a freshly mopped floor past the “Wet Floor” sign because nobody gets to boss you around.",
+           clue: "Is the pilot ignoring a rule or instruction on purpose?" },
+  impul: { name: "Impulsivity",     emoji: "⚡", color: "var(--c-impul)",
+           thought: "Do it quickly.", antidote: "Not so fast. Think first.",
+           means: "The pilot acts before thinking. They do the first thing that pops into their head or rush to save time.",
+           everyday: "Hitting “Submit” on a test before reading the last question.",
+           clue: "Is the pilot rushing or acting before thinking?" },
+  invul: { name: "Invulnerability", emoji: "🛡️", color: "var(--c-invul)",
+           thought: "It won’t happen to me.", antidote: "It could happen to me.",
+           means: "The pilot believes accidents only happen to other people, so they don’t worry about the danger.",
+           everyday: "Skipping your bike helmet because “I never crash.”",
+           clue: "Does the pilot think bad things only happen to other people?" },
+  macho: { name: "Macho",           emoji: "💪", color: "var(--c-macho)",
+           thought: "I can do it.", antidote: "Taking chances is foolish.",
+           means: "The pilot takes risks to prove how good they are or to impress other people.",
+           everyday: "Jumping your bike off a huge ramp because your friends are watching.",
+           clue: "Is the pilot showing off or trying to prove how skilled they are?" },
+  resig: { name: "Resignation",     emoji: "😩", color: "var(--c-resig)",
+           thought: "What’s the use?", antidote: "I’m not helpless. I can make a difference.",
+           means: "The pilot gives up. They feel like nothing they do will matter, or they let other people make the decisions.",
+           everyday: "Not studying for a test because “I’m going to fail anyway.”",
+           clue: "Is the pilot giving up or just going along with whatever happens?" }
+};
+
+/* ============================================================
+   SCENARIOS — edit or add here.
+   attitude: one of anti, impul, invul, macho, resig
+   text:     the scenario students read
+   why:      one or two sentences explaining the answer
+   ============================================================ */
+const SCENARIOS = [
+  // ---------- Anti-authority ----------
+  { attitude: "anti",
+    text: "During the run-up, a newly certificated pilot leaves the checklist in the seat pocket and thinks, “Checklists are for students. I know this airplane better than whoever wrote that list.”",
+    why: "The pilot rejects a required procedure because someone else wrote it. Resenting rules and procedures is the core of anti-authority." },
+  { attitude: "anti",
+    text: "Tower asks a pilot to extend downwind for traffic. The pilot mutters, “I was here first. I’m turning base when I want to,” and turns early.",
+    why: "The pilot resents being told what to do by ATC and substitutes his own judgment for a clear instruction." },
+  { attitude: "anti",
+    text: "Reading a NOTAM about a temporary flight restriction, a pilot says, “Those restrictions are made up by people who’ve never flown. I’m not rerouting around it.”",
+    why: "Dismissing a regulation because of who made it is anti-authority. The pilot isn’t rushing or bragging; he just won’t accept the rule." },
+  { attitude: "anti",
+    text: "The flying club requires a one-hour fuel reserve. A member says, “The FAA only requires 30 minutes in the day. The club doesn’t get to tell me how to manage my own fuel.”",
+    why: "The pilot resents a rule set by an organization that has authority over the rental. That resentment, not a belief that he’s safe, drives the choice." },
+  { attitude: "anti",
+    text: "A mechanic hangs a placard reading “Do not fly — mag drop out of limits.” The owner pulls it off and says, “He’s always overcautious. I decide whether my airplane is airworthy.”",
+    why: "The owner disregards the mechanic’s authority and the airworthiness process. That’s anti-authority, even though it could look like overconfidence." },
+  { attitude: "anti",
+    text: "After passing the checkride, a pilot tells a friend, “Weight-and-balance calculations were something my instructor made me do. Now that I’m certificated, I’ll skip them.”",
+    why: "The pilot treats procedures as something forced on him by others and drops them once no one is watching." },
+  { attitude: "anti",
+    text: "Ground control says, “Hold short of Runway 20.” The pilot looks, sees no traffic, and thinks, “I don’t need someone in a tower deciding when it’s safe for me.” He taxis across.",
+    why: "Tricky pair: this isn’t impulsivity, because the pilot made a deliberate choice. He crossed because he rejects ATC’s right to control him." },
+  { attitude: "anti",
+    text: "An airport posts noise-abatement procedures. A pilot says, “The neighbors chose to live by an airport. The manager can’t make me reduce power over their houses.”",
+    why: "The pilot refuses a published procedure because he doesn’t accept the authority of the people who set it." },
+
+  // ---------- Impulsivity ----------
+  { attitude: "impul",
+    text: "Shortly after takeoff, the low-voltage light comes on. The pilot immediately flips the master switch off without looking at the checklist.",
+    why: "The pilot reacted instantly instead of pausing to assess and use the checklist. Doing the first thing that comes to mind is impulsivity." },
+  { attitude: "impul",
+    text: "The forecast calls for storms in the afternoon. A pilot skips the full weather briefing and says, “Let’s just go now and beat it. We’ll sort out the details in the air.”",
+    why: "The pilot rushes into the flight without taking time to gather information. The urge to act fast is the giveaway." },
+  { attitude: "impul",
+    text: "A controller begins, “Cessna 345, cleared…” and the pilot pushes the throttle in and starts the takeoff roll before the transmission ends.",
+    why: "Tricky pair: the pilot isn’t defying ATC. He acted before he heard the full instruction, which is impulsivity, not anti-authority." },
+  { attitude: "impul",
+    text: "On takeoff, the cabin door pops open with a loud bang. The pilot lets go of the yoke and reaches across to grab the door.",
+    why: "An unexpected event triggered an immediate reaction instead of flying the airplane first. That split-second response is impulsivity." },
+  { attitude: "impul",
+    text: "The line at the FBO is long. The pilot tells his passenger, “Forget the fuel samples. Hop in and let’s get out of here.”",
+    why: "The pilot cuts out a preflight step to hurry. He isn’t claiming nothing bad could happen; he simply wants to move fast." },
+  { attitude: "impul",
+    text: "On a checkride, the examiner asks for a diversion. The applicant instantly banks toward the first airport that comes to mind without checking heading, distance, or airspace.",
+    why: "Acting on the first idea without thinking it through is impulsivity. A brief pause to plan would have prevented the mistake." },
+  { attitude: "impul",
+    text: "En route, a pilot sees a cloud layer forming ahead and immediately starts a steep descent underneath it without checking terrain or obstacle heights.",
+    why: "The pilot jumped to a solution without evaluating it. Speed of reaction, not confidence, is the problem here." },
+  { attitude: "impul",
+    text: "A passenger asks to see her house. The pilot thinks, “Sure!” and immediately turns toward it, punching a direct-to into the GPS without checking for airspace along the way.",
+    why: "The pilot changed plans on the spot without stopping to think about where the new route would take him." },
+
+  // ---------- Invulnerability ----------
+  { attitude: "invul",
+    text: "Cruising on a humid day, a pilot notices the RPM slowly dropping and thinks, “Carb ice is something that happens to people in old, beat-up airplanes, not this one.”",
+    why: "The pilot believes accidents and problems happen to others. That’s invulnerability." },
+  { attitude: "invul",
+    text: "A pilot leaves the shoulder harness unbuckled and says, “Accidents happen to careless pilots. I’m not one of them.”",
+    why: "The pilot thinks he’s immune to accidents. He isn’t bragging about skill; he simply doesn’t believe it could happen to him." },
+  { attitude: "invul",
+    text: "After 20 hours awake, a pilot decides to fly home anyway: “I’ve flown tired plenty of times and nothing has ever happened.”",
+    why: "Tricky pair: the pilot isn’t claiming he’s skilled enough to beat fatigue (macho). He believes bad outcomes won’t touch him (invulnerability)." },
+  { attitude: "invul",
+    text: "Reading an accident report about VFR flight into clouds, a pilot says, “That’s a low-time pilot problem. That won’t be my story.”",
+    why: "Seeing accidents as things that happen to other people is classic invulnerability." },
+  { attitude: "invul",
+    text: "The fuel gauges show a quarter tank with 40 minutes left to fly. The pilot thinks, “I’ve never even come close to running out. It’ll be fine.”",
+    why: "The pilot assumes past luck guarantees future safety. Believing a fuel emergency just won’t happen is invulnerability." },
+  { attitude: "invul",
+    text: "Flying low along a river, a passenger asks about power lines. The pilot says, “Wires out here? I’ve never seen any. We’re not going to hit anything.”",
+    why: "The pilot dismisses a real hazard because he doesn’t believe it could affect him." },
+  { attitude: "invul",
+    text: "Planning a flight at 13,500 feet, a fit pilot skips the oxygen: “Hypoxia gets smokers and people who are out of shape. I don’t need it.”",
+    why: "Tricky pair: the pilot isn’t trying to prove anything. He thinks he’s personally immune to hypoxia, which is invulnerability." },
+  { attitude: "invul",
+    text: "A thunderstorm is building 10 miles from the airport. A pilot departs anyway, thinking, “The odds of anything bad happening to me in a few minutes are tiny.”",
+    why: "The pilot assumes he’s the exception to the risk. That’s invulnerability, not a deliberate attempt to show off." },
+
+  // ---------- Macho ----------
+  { attitude: "macho",
+    text: "With friends watching from the ramp, a pilot departs into a crosswind stronger than the airplane’s demonstrated component: “Watch this. I’ll show you how it’s done.”",
+    why: "The pilot takes a risk to prove his ability and impress others. That’s the macho attitude." },
+  { attitude: "macho",
+    text: "At maximum gross weight, a pilot plans to use a short grass strip that other pilots avoid: “They don’t have the skills. I do.”",
+    why: "The pilot takes a chance to show he’s better than other pilots. Proving ability is the heart of macho." },
+  { attitude: "macho",
+    text: "The crosswind is gusting past the book number. A pilot thinks, “That limit was written for an average pilot. I’m better than average.”",
+    why: "Tricky pair: the pilot knows the risk is real but believes his skill can beat it. That’s macho, not invulnerability." },
+  { attitude: "macho",
+    text: "To impress first-time passengers, a pilot pulls into steep turns and a low pass over a friend’s house.",
+    why: "Taking chances to show off for others is the macho attitude." },
+  { attitude: "macho",
+    text: "A VFR-only pilot looks at low scattered clouds at night and says, “Instrument rating or not, I can keep it upright in a little scud.”",
+    why: "The pilot is confident his skill will carry him through conditions he isn’t rated for. That “I can do it” thinking is macho." },
+  { attitude: "macho",
+    text: "In the pilot lounge, others brag about landing in foggy conditions. A pilot decides to try the same approach that afternoon so he won’t look less capable.",
+    why: "The pilot takes a risk to prove himself to peers. That social pressure and need to measure up is macho." },
+  { attitude: "macho",
+    text: "Floating long and fast down the runway, a pilot refuses to go around: “Go-arounds are for people who can’t land. I’ll make this work.”",
+    why: "Seeing a safe procedure as a sign of weakness and pushing to prove skill is macho." },
+  { attitude: "macho",
+    text: "An examiner says the weather is marginal and offers to reschedule the checkride. The applicant insists: “I can handle it. Let’s go today.”",
+    why: "The applicant wants to prove he can fly in tougher conditions rather than accept a safer option. That’s macho." },
+
+  // ---------- Resignation ----------
+  { attitude: "resig",
+    text: "The engine begins running rough over a wooded area. The pilot thinks, “There’s nothing I can do. Whatever happens, happens,” and doesn’t run the checklist.",
+    why: "The pilot feels helpless and stops trying to improve the situation. That’s resignation." },
+  { attitude: "resig",
+    text: "A student on a solo cross-country realizes she’s lost and thinks, “There’s no point trying to figure it out,” and keeps flying the same heading.",
+    why: "Giving up on actions that could help, like using the radio or locating landmarks, is resignation." },
+  { attitude: "resig",
+    text: "The weather ahead keeps getting worse. The pilot thinks, “I can’t change the weather, so why bother looking for an alternate?”",
+    why: "The pilot feels the outcome is out of his control and stops making decisions. That’s resignation." },
+  { attitude: "resig",
+    text: "A passenger keeps pushing to continue into darkening weather. The pilot thinks, “It’s his trip. I’ll just go along with whatever he wants.”",
+    why: "Letting others make the decision instead of acting as pilot in command is resignation." },
+  { attitude: "resig",
+    text: "During a checkride, an applicant busts altitude on steep turns and thinks, “I already blew it. There’s no use trying on the rest.”",
+    why: "The applicant gives up rather than continuing to perform. Feeling that effort won’t matter is resignation." },
+  { attitude: "resig",
+    text: "At night, the radios and panel lights fail one after another. The pilot stops troubleshooting and says, “Everything’s going wrong. Nothing I do will help.”",
+    why: "The pilot believes he can’t make a difference and stops working the problem. That’s resignation." },
+  { attitude: "resig",
+    text: "ATC gives a vector that would take a VFR pilot into clouds. He feels uneasy but thinks, “The controller must know best. It’s not my place to question it.”",
+    why: "Tricky pair: the pilot isn’t rejecting authority, he’s handing over his decision-making. Passively going along is resignation." },
+  { attitude: "resig",
+    text: "Light ice starts forming on the wings. The pilot thinks, “We’re already picking up ice. Turning around won’t change anything now,” and continues.",
+    why: "Believing his actions won’t help keeps the pilot from taking the steps that would. That’s resignation." }
+];
+
+/* ============================================================
+   APP LOGIC
+   ============================================================ */
+const TEST_LENGTH = 15;
+const SESSION_LENGTH = 20; // questions per Practice or Antidotes session
+const MODE_NAMES = { practice: "Practice", antidote: "Antidotes", test: "Test" };
+const $ = (id) => document.getElementById(id);
+let state = { mode: null, questions: [], index: 0, correct: 0, answers: [], answered: false };
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function show(section) {
+  ["home", "learn", "quiz", "results"].forEach(id => $(id).classList.toggle("hidden", id !== section));
+  window.scrollTo(0, 0);
+}
+function badge(key) {
+  const a = ATTITUDES[key];
+  return `<span class="badge" style="--c:${a.color}" aria-hidden="true">${a.emoji}</span>`;
+}
+function clueItems() {
+  return Object.entries(ATTITUDES).map(([k, a]) =>
+    `<li style="--c:${a.color}"><span class="e" aria-hidden="true">${a.emoji}</span><span>${a.clue} <b>→ ${a.name}</b></span></li>`
+  ).join("");
+}
+function buildLearn() {
+  $("attCards").innerHTML = Object.entries(ATTITUDES).map(([k, a]) => `
+    <article class="att-card" style="--c:${a.color}">
+      <div class="att-head">${badge(k)}
+        <div><h3>${a.name}</h3><div class="says">Sounds like: “${a.thought}”</div></div>
+      </div>
+      <dl>
+        <dt>What it means</dt><dd>${a.means}</dd>
+        <dt>Everyday example</dt><dd>${a.everyday}</dd>
+        <dt>Antidote</dt><dd><span class="antidote-chip">💊 “${a.antidote}”</span></dd>
+      </dl>
+    </article>`).join("");
+  $("clueListLearn").innerHTML = clueItems();
+  $("clueListQuiz").innerHTML = clueItems();
+}
+
+function start(mode) {
+  state.mode = mode;
+  state.questions = shuffle(SCENARIOS).slice(0, mode === "test" ? TEST_LENGTH : SESSION_LENGTH);
+  state.index = 0; state.correct = 0; state.answers = [];
+  $("modeName").textContent = MODE_NAMES[mode];
+  $("promptText").textContent = mode === "antidote"
+    ? "Which antidote would help this pilot?"
+    : "Which hazardous attitude is this?";
+  $("clueToggle").classList.toggle("hidden", mode === "test");
+  show("quiz");
+  renderQuestion();
+}
+
+function setClue(open) {
+  $("clueBox").classList.toggle("hidden", !open);
+  $("clueToggle").setAttribute("aria-expanded", String(open));
+  $("clueToggle").textContent = open ? "🔍 Hide clue card" : "🔍 Show clue card";
+}
+
+function renderQuestion() {
+  const q = state.questions[state.index];
+  const total = state.questions.length;
+  state.answered = false;
+  $("progressText").textContent = `Question ${state.index + 1} of ${total}`;
+  $("scoreText").textContent = state.mode === "test" ? "" : `⭐ ${state.correct} correct`;
+  $("progressBar").style.width = `${(state.index / total) * 100}%`;
+  $("scenarioText").textContent = q.text;
+  $("feedback").classList.add("hidden");
+  setClue(false);
+
+  const box = $("choices");
+  box.innerHTML = "";
+  shuffle(Object.keys(ATTITUDES)).forEach(key => {
+    const a = ATTITUDES[key];
+    const b = document.createElement("button");
+    b.className = "choice" + (state.mode === "antidote" ? " antidote-text" : "");
+    b.dataset.key = key;
+    if (state.mode === "antidote") {
+      b.style.setProperty("--c", "var(--primary)");
+      b.innerHTML = `<span class="badge" style="--c:var(--primary)" aria-hidden="true">💊</span><span>“${a.antidote}”</span><span class="mark"></span>`;
+    } else {
+      b.style.setProperty("--c", a.color);
+      b.innerHTML = `${badge(key)}<span>${a.name}</span><span class="mark"></span>`;
+    }
+    b.addEventListener("click", () => answer(key));
+    box.appendChild(b);
+  });
+}
+
+function answer(key) {
+  if (state.answered) return;
+  state.answered = true;
+  const q = state.questions[state.index];
+  const right = key === q.attitude;
+  if (right) state.correct++;
+  state.answers.push({ q, picked: key, right });
+  if (state.mode === "test") { next(); return; }
+
+  document.querySelectorAll("#choices .choice").forEach(b => {
+    b.disabled = true;
+    const mark = b.querySelector(".mark");
+    if (b.dataset.key === q.attitude) { b.classList.add("is-correct"); mark.textContent = "✅"; }
+    else if (b.dataset.key === key) { b.classList.add("is-wrong"); mark.textContent = "❌"; }
+    else b.classList.add("is-dim");
+  });
+  $("scoreText").textContent = `⭐ ${state.correct} correct`;
+  setClue(false);
+
+  const a = ATTITUDES[q.attitude];
+  const fb = $("feedback");
+  fb.className = "feedback" + (right ? "" : " wrong");
+  const verdict = right
+    ? `🎉 You got it! That’s ${a.name} ${a.emoji}`
+    : `Not quite. This one is ${a.name} ${a.emoji}`;
+  const last = state.index === state.questions.length - 1;
+  fb.innerHTML = `
+    <p class="verdict">${verdict}</p>
+    <p>${q.why}</p>
+    <p class="antidote">💊 Antidote: “${a.antidote}”</p>
+    <button class="pill" id="nextBtn">${last ? "See my results" : "Next question"}</button>`;
+  $("nextBtn").addEventListener("click", next);
+  $("nextBtn").focus({ preventScroll: true });
+  fb.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+}
+
+function next() {
+  state.index++;
+  if (state.index >= state.questions.length) { $("progressBar").style.width = "100%"; showResults(); }
+  else renderQuestion();
+}
+
+function message(pct) {
+  if (pct >= 90) return ["🏆", "Ace pilot! You really know your attitudes."];
+  if (pct >= 75) return ["✈️", "Great flying! Just a few to review."];
+  if (pct >= 50) return ["🛫", "Good start. Check the clue card and try again."];
+  return ["📘", "Keep practicing! Reread the 5 attitudes, then give it another go."];
+}
+
+function showResults() {
+  const total = state.questions.length;
+  const pct = Math.round((state.correct / total) * 100);
+  const [emoji, msg] = message(pct);
+  $("resultsTitle").textContent = `${MODE_NAMES[state.mode]} results`;
+  let html = `<div class="panel score-wrap">
+      <div class="emoji" aria-hidden="true">${emoji}</div>
+      <p class="score">${state.correct} / ${total}</p>
+      <p class="score-msg">${pct}% · ${msg}</p>
+    </div>`;
+
+  if (state.mode === "test") {
+    const tally = {};
+    Object.keys(ATTITUDES).forEach(k => tally[k] = { right: 0, total: 0 });
+    state.answers.forEach(a => { tally[a.q.attitude].total++; if (a.right) tally[a.q.attitude].right++; });
+    html += `<div class="panel"><h3 style="margin-bottom:0.5rem">How you did on each attitude</h3>`;
+    Object.entries(ATTITUDES).forEach(([k, a]) => {
+      const t = tally[k];
+      const w = t.total ? (t.right / t.total) * 100 : 0;
+      html += `<div class="row" style="--c:${a.color}">${badge(k)}
+        <div><div class="name">${a.name}</div><div class="track"><div style="width:${w}%"></div></div></div>
+        <div class="num">${t.total ? `${t.right} of ${t.total}` : "none asked"}</div></div>`;
+    });
+    html += `</div>`;
+
+    const missed = state.answers.filter(a => !a.right);
+    html += `<h2 style="margin-top:1.25rem">${missed.length ? "Let’s review the ones you missed" : "No misses. Amazing! 🌟"}</h2>`;
+    missed.forEach(m => {
+      const a = ATTITUDES[m.q.attitude];
+      html += `<div class="panel miss">
+        <p>${m.q.text}</p>
+        <p><span class="label">You picked:</span> ${ATTITUDES[m.picked].emoji} ${ATTITUDES[m.picked].name}<br>
+           <span class="label">Answer:</span> <b>${a.emoji} ${a.name}</b></p>
+        <p>${m.q.why}</p>
+        <p class="label" style="margin-bottom:0">💊 Antidote: “${a.antidote}”</p>
+      </div>`;
+    });
+  }
+
+  html += `<div class="actions">
+    <button class="pill" id="againBtn">${state.mode === "test" ? "Take a new test" : "Play again"}</button>
+    <button class="ghost" data-go="home">Menu</button>
+    <button class="ghost" data-go="learn">Review the 5 attitudes</button>
+  </div>`;
+  $("resultsBody").innerHTML = html;
+  $("againBtn").addEventListener("click", () => start(state.mode));
+  show("results");
+}
+
+/* ---------- Wiring ---------- */
+document.addEventListener("click", (e) => {
+  const go = e.target.closest("[data-go]");
+  if (go) { show(go.dataset.go); return; }
+  const m = e.target.closest("[data-mode]");
+  if (m) start(m.dataset.mode);
+});
+$("learnBtn").addEventListener("click", () => show("learn"));
+$("restartBtn").addEventListener("click", () => start(state.mode));
+$("clueToggle").addEventListener("click", () => setClue($("clueBox").classList.contains("hidden")));
+buildLearn();
+</script>
+</body>
+</html>
